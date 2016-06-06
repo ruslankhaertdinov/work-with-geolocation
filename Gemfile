@@ -15,6 +15,7 @@ gem "sass-rails", "~> 5.0.0"
 gem "skim"
 gem "therubyracer", platforms: :ruby
 gem "uglifier", ">= 2.7.2"
+gem "gmaps4rails"
 
 # views
 gem "active_link_to"
@@ -41,6 +42,10 @@ gem "responders"
 gem "rollbar"
 gem "seedbank"
 gem "stackprof"
+
+source "https://rails-assets.org" do
+  gem "rails-assets-underscore"
+end
 
 group :staging, :production do
   gem "newrelic_rpm"
