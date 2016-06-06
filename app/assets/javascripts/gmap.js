@@ -1,19 +1,44 @@
 $(document).ready(function(){
-  handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+  var latitude = 66.6304241,
+    longitude = 66.8048504,
+    defaultZoom = 2;
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  handler = Gmaps.build("Google");
+  handler.buildMap({
+    provider: {
+      zoom: defaultZoom,
+      scrollwheel: false,
+    },
+    internal: { id: "map" }
+  }, function(){
     markers = handler.addMarkers([
       {
-        "lat": 0,
-        "lng": 0,
-        "picture": {
-          "url": "http://people.mozilla.com/~faaborg/files/shiretoko/firefoxIcon/firefox-32.png",
-          "width":  32,
-          "height": 32
-        },
+        "lat": latitude,
+        "lng": longitude,
         "infowindow": "hello!"
       }
     ]);
     handler.bounds.extendWith(markers);
-    handler.fitMapToBounds();
   });
+
+  function success(pos) {
+    setCenter(pos.coords)
+  };
+
+  function setCenter(coords) {
+    handler.map.centerOn([coords.latitude, coords.longitude]);
+  }
+
+  function error(err) {
+    setCenter({ latitude: latitude, longitude: longitude });
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  };
+
+  navigator.geolocation.getCurrentPosition(success, error, options);
 })
