@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   geocoded_by :full_address
 
+  scope :with_position, -> { where.not(latitude: nil, longitude: nil) }
+
   private
 
   def full_address
