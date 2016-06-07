@@ -1,36 +1,46 @@
 $(document).ready(function(){
-  var DEFAULT_COORDS = { lat: -34.397, lng: 150.644 };
+  var DEFAULT_COORDS = { lat: 37.773972, lng: -122.431297 };
 
   function initMap() {
     var map = new google.maps.Map(document.getElementById("map"), {
       center: DEFAULT_COORDS,
       zoom: 6
     });
+
     var infoWindow = new google.maps.InfoWindow({map: map});
+    infoWindow.setPosition(DEFAULT_COORDS);
+    infoWindow.setContent("Your location is there.");
 
-    // Try HTML5 geolocation.
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-
-        infoWindow.setPosition(pos);
-        infoWindow.setContent("Location found.");
-        map.setCenter(pos);
+      navigator.geolocation.getCurrentPosition(function(data) {
+        var position = parsePosition(data);
+        infoWindow.setPosition(position);
+        map.setCenter(position);
       }, function() {
-        handleLocationError(true, infoWindow, map.getCenter());
+        fetchIPLocation(map, infoWindow);
       });
     } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter());
+      fetchIPLocation(map, infoWindow);
     }
   }
 
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ? "Error: The Geolocation service failed." : "Error: Your browser doesn't support geolocation.");
+  function fetchIPLocation(map, infoWindow) {
+    $.get("/locations/fetch")
+      .done(function(data) {
+        var position = parsePosition(data);
+        infoWindow.setPosition(position);
+        map.setCenter(position);
+      })
+      .fail(function() {
+        console.error("Your location could not be fetched.");
+      });
+  }
+
+  function parsePosition(data) {
+    return {
+      lat: data.coords.latitude,
+      lng: data.coords.longitude
+    };
   }
 
   initMap();
