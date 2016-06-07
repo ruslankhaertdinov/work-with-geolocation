@@ -4,7 +4,8 @@ $(document).ready(function(){
   function initMap() {
     var map = new google.maps.Map(document.getElementById("map"), {
       center: DEFAULT_COORDS,
-      zoom: 6
+      zoom: 6,
+      scrollwheel: false
     });
 
     var infoWindow = new google.maps.InfoWindow({map: map});
@@ -22,6 +23,8 @@ $(document).ready(function(){
     } else {
       fetchIPLocation(map, infoWindow);
     }
+
+    addMarkers(map);
   }
 
   function fetchIPLocation(map, infoWindow) {
@@ -41,6 +44,17 @@ $(document).ready(function(){
       lat: data.coords.latitude,
       lng: data.coords.longitude
     };
+  }
+
+  function addMarkers(map) {
+    $.get("/locations").done(function(data){
+      $.each(data, function(i, location){
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+      });
+    });
   }
 
   initMap();
