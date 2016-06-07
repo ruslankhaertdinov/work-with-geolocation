@@ -1,7 +1,9 @@
 $(document).ready(function(){
+  var DEFAULT_COORDS = { lat: -34.397, lng: 150.644 };
+
   function initMap() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: -34.397, lng: 150.644},
+    var map = new google.maps.Map(document.getElementById("map"), {
+      center: DEFAULT_COORDS,
       zoom: 6
     });
     var infoWindow = new google.maps.InfoWindow({map: map});
@@ -15,7 +17,7 @@ $(document).ready(function(){
         };
 
         infoWindow.setPosition(pos);
-        infoWindow.setContent('Location found.');
+        infoWindow.setContent("Location found.");
         map.setCenter(pos);
       }, function() {
         handleLocationError(true, infoWindow, map.getCenter());
