@@ -23,7 +23,7 @@ class LocationsController < ApplicationController
       {
         lat: user.latitude,
         lng: user.longitude,
-        info: "#{user.full_name} from #{user.full_address}"
+        info: user.full_name
       }
     end
   end
