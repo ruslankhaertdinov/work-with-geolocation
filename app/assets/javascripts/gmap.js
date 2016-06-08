@@ -41,7 +41,7 @@ $(document).ready(function(){
       var marker = new google.maps.Marker({ position: position, map: map });
       marker.addListener("click", function() {
         closeInfoWindows();
-        createInfoWindow(location.info).open(map, marker);
+        createInfoWindow(position.info).open(map, marker);
         map.panTo(marker.getPosition());
       });
     });
