@@ -10,14 +10,13 @@ class User < ActiveRecord::Base
 
   scope :with_position, -> { where.not(latitude: nil, longitude: nil) }
 
-  private
-
   def full_address
-    "#{country} #{city}, #{address}".strip
+    [country, city, address].select(&:present?).join(", ")
   end
 
+  private
+
   def full_address_changed?
-    return false if full_address.blank?
-    country.changed? || city.changed? || address.changed?
+    (changed & %w(country city address)).any?
   end
 end
