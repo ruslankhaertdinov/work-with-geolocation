@@ -9,8 +9,6 @@
 #= require foundation
 #= require current_user
 #= require skim
-#= require underscore
-#= require gmaps/google
 #= require_tree ../templates
 #= require_tree .
 

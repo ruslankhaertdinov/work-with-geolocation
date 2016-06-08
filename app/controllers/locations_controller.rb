@@ -1,14 +1,6 @@
 class LocationsController < ApplicationController
-  expose(:users) { User.with_position }
-  expose(:users_hash) do
-    Gmaps4rails.build_markers(users) do |user, marker|
-      marker.lat user.latitude
-      marker.lng user.longitude
-    end
-  end
-
   def index
-    render json: users_hash
+    render json: markers
   end
 
   def fetch
@@ -24,5 +16,15 @@ class LocationsController < ApplicationController
 
   def request_location_data
     request.location && request.location.data
+  end
+
+  def markers
+    User.with_position.map do |user|
+      {
+        lat: user.latitude,
+        lng: user.longitude,
+        info: user.full_name
+      }
+    end
   end
 end

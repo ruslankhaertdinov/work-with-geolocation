@@ -1,42 +1,31 @@
 $(document).ready(function(){
   var DEFAULT_COORDS = { lat: 37.773972, lng: -122.431297 };
+  var infoWindows = [];
 
   function initMap() {
     var map = new google.maps.Map(document.getElementById("map"), {
       center: DEFAULT_COORDS,
-      zoom: 6,
+      zoom: 10,
       scrollwheel: false
     });
 
-    var infoWindow = new google.maps.InfoWindow({map: map});
-    infoWindow.setPosition(DEFAULT_COORDS);
-    infoWindow.setContent("Your location is there.");
-
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(data) {
-        var position = parsePosition(data);
-        infoWindow.setPosition(position);
-        map.setCenter(position);
+        map.setCenter(parsePosition(data));
       }, function() {
-        fetchIPLocation(map, infoWindow);
+        fetchIPLocation(map);
       });
     } else {
-      fetchIPLocation(map, infoWindow);
+      fetchIPLocation(map);
     }
 
     addMarkers(map);
   }
 
-  function fetchIPLocation(map, infoWindow) {
+  function fetchIPLocation(map) {
     $.get("/locations/fetch")
-      .done(function(data) {
-        var position = parsePosition(data);
-        infoWindow.setPosition(position);
-        map.setCenter(position);
-      })
-      .fail(function() {
-        console.error("Your location could not be fetched.");
-      });
+      .done(function(data) { map.setCenter(parsePosition(data)); })
+      .fail(function() { console.error("Your location could not be fetched."); });
   }
 
   function parsePosition(data) {
@@ -53,9 +42,25 @@ $(document).ready(function(){
           position: location,
           map: map
         });
+        marker.addListener("click", function() {
+          closeInfoWindows();
+          createInfoWindow(location.info).open(map, marker);
+          map.panTo(marker.getPosition());
+        });
       });
     });
   }
 
+  function createInfoWindow(content) {
+    var infowindow = new google.maps.InfoWindow({ content: content });
+    infoWindows.push(infowindow);
+    return infowindow;
+  }
+
+  function closeInfoWindows() {
+    $.each(infoWindows, function(i, box){
+      box.close();
+    })
+  }
   initMap();
-})
+});
