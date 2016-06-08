@@ -14,4 +14,9 @@ FactoryGirl.define do
       user.update(confirmation_sent_at: 3.days.ago)
     end
   end
+
+  trait :with_position do
+    latitude  { rand(44..55) }
+    longitude { rand(44..55) }
+  end
 end

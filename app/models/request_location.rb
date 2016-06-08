@@ -11,9 +11,10 @@ class RequestLocation
   end
 
   def to_h
-    # { "latitude" => 55.6889092, "longitude" => 52.329052 }
     { "latitude" => latitude, "longitude" => longitude }
   end
+
+  private
 
   def latitude
     lat = location["latitude"]
