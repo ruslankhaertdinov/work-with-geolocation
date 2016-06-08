@@ -3,3 +3,6 @@
     h2
       = title("Home")
 = render "pages/google_map", gmaps_url: gmaps_url
+
+javascript:
+  App.locations = #{{locations.to_json}};

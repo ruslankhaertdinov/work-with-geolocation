@@ -1,8 +1,4 @@
 class LocationsController < ApplicationController
-  def index
-    render json: markers
-  end
-
   def fetch
     render json: { coords: request_location.to_h }
   end
@@ -16,15 +12,5 @@ class LocationsController < ApplicationController
 
   def request_location_data
     request.location && request.location.data
-  end
-
-  def markers
-    User.with_position.map do |user|
-      {
-        lat: user.latitude,
-        lng: user.longitude,
-        info: user.full_name
-      }
-    end
   end
 end

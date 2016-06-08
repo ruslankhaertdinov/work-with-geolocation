@@ -1,5 +1,6 @@
 $(document).ready(function(){
   var DEFAULT_COORDS = { lat: 37.773972, lng: -122.431297 };
+  var LOCATIONS = App.locations;
   var infoWindows = [];
 
   function initMap() {
@@ -19,7 +20,7 @@ $(document).ready(function(){
       fetchIPLocation(map);
     }
 
-    addMarkers(map);
+    drawMarkers(map);
   }
 
   function fetchIPLocation(map) {
@@ -35,18 +36,13 @@ $(document).ready(function(){
     };
   }
 
-  function addMarkers(map) {
-    $.get("/locations").done(function(data){
-      $.each(data, function(i, location){
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
-        });
-        marker.addListener("click", function() {
-          closeInfoWindows();
-          createInfoWindow(location.info).open(map, marker);
-          map.panTo(marker.getPosition());
-        });
+  function drawMarkers(map) {
+    $.each(LOCATIONS, function(i, position){
+      var marker = new google.maps.Marker({ position: position, map: map });
+      marker.addListener("click", function() {
+        closeInfoWindows();
+        createInfoWindow(location.info).open(map, marker);
+        map.panTo(marker.getPosition());
       });
     });
   }
@@ -62,5 +58,6 @@ $(document).ready(function(){
       box.close();
     })
   }
+
   initMap();
 });
