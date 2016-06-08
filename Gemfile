@@ -23,6 +23,7 @@ gem "simple_form"
 gem "slim"
 
 # all other gems
+gem "country_select"
 gem "decent_decoration"
 gem "decent_exposure"
 gem "devise"

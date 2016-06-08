@@ -1,12 +1,20 @@
 class PagesController < ApplicationController
-  expose(:users) { User.all }
-  expose(:users_hash) do
-    Gmaps4rails.build_markers(users) do |user, marker|
-      marker.lat user.latitude
-      marker.lng user.longitude
-    end
-  end
+  expose(:gmaps_url) { "//maps.google.com/maps/api/js?v=3.23&key=#{ENV['GOOGLE_MAP_KEY']}" }
+
+  helper_method :locations
 
   def home
+  end
+
+  private
+
+  def locations
+    User.with_position.map do |user|
+      {
+        lat: user.latitude,
+        lng: user.longitude,
+        info: user.full_name
+      }
+    end
   end
 end
