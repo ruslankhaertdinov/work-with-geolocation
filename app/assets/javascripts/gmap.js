@@ -6,7 +6,7 @@ $(document).ready(function(){
   function initMap() {
     var map = new google.maps.Map(document.getElementById("map"), {
       center: DEFAULT_COORDS,
-      zoom: 10,
+      zoom: 7,
       scrollwheel: false
     });
 
@@ -37,24 +37,24 @@ $(document).ready(function(){
   }
 
   function drawMarkers(map) {
-    $.each(LOCATIONS, function(i, position){
-      var marker = new google.maps.Marker({ position: position, map: map });
+    LOCATIONS.forEach(function(location, i){
+      var marker = new google.maps.Marker({ position: location, map: map });
       marker.addListener("click", function() {
         closeInfoWindows();
-        createInfoWindow(position.info).open(map, marker);
+        createInfoWindow(location.info).open(map, marker);
         map.panTo(marker.getPosition());
       });
     });
   }
 
   function createInfoWindow(content) {
-    var infowindow = new google.maps.InfoWindow({ content: content });
-    infoWindows.push(infowindow);
-    return infowindow;
+    var infoWindow = new google.maps.InfoWindow({ content: content });
+    infoWindows.push(infoWindow);
+    return infoWindow;
   }
 
   function closeInfoWindows() {
-    $.each(infoWindows, function(i, box){
+    infoWindows.forEach(function(box, i){
       box.close();
     })
   }
