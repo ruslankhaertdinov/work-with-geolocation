@@ -1,4 +1,4 @@
-class RequestLocation
+class FetchLocation
   attr_reader :location
   private :location
 

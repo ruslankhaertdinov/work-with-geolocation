@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
 
   def request_location
     session[:request_location] ||= request_location_data
-    RequestLocation.new(session[:request_location])
+    FetchLocation.new(session[:request_location])
   end
 
   def request_location_data
