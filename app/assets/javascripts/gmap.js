@@ -1,7 +1,9 @@
 $(document).ready(function(){
   var DEFAULT_COORDS = { lat: 37.773972, lng: -122.431297 };
   var LOCATIONS = App.locations;
+  var IMAGE_PATH = "https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m";
   var infoWindows = [];
+  var markers = [];
 
   function initMap() {
     var map = new google.maps.Map(document.getElementById("map"), {
@@ -39,12 +41,15 @@ $(document).ready(function(){
   function drawMarkers(map) {
     LOCATIONS.forEach(function(location, i){
       var marker = new google.maps.Marker({ position: location, map: map });
+      markers.push(marker);
       marker.addListener("click", function() {
         closeInfoWindows();
         createInfoWindow(location.info).open(map, marker);
         map.panTo(marker.getPosition());
       });
     });
+
+    var markerCluster = new MarkerClusterer(map, markers, { imagePath: IMAGE_PATH });
   }
 
   function createInfoWindow(content) {
