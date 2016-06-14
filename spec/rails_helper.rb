@@ -17,5 +17,5 @@ Capybara::Webkit.configure do |config|
 
   # google map urls
   config.allow_url("*//maps.google.com/*")
-  config.allow_url("*//*.gstatic.com/*")
+  config.allow_url("*.gstatic.com/*")
 end
