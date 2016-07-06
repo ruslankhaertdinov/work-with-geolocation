@@ -23,11 +23,13 @@ gem "simple_form"
 gem "slim"
 
 # all other gems
+gem "country_select"
 gem "decent_decoration"
 gem "decent_exposure"
 gem "devise"
 gem "draper"
 gem "flamegraph"
+gem "geocoder"
 gem "google-analytics-rails"
 gem "health_check"
 gem "interactor"

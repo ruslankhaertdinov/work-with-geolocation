@@ -5,6 +5,9 @@ class User
       email
       password
       password_confirmation
+      country
+      city
+      address
     ).freeze
 
     def sign_up
